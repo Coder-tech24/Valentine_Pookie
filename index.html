@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#ff4d6d" />
+  <title>For You ❤️</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <style>
+    :root { --bg1:#0b1020; --bg2:#1b1f3a; --card:#11162a; --accent:#ff4d6d; --text:#f7f7ff; }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; display:grid; place-items:center;
+      font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 20% 10%, #2b2f55 0%, transparent 60%),
+                  radial-gradient(900px 700px at 80% 90%, #3a1b36 0%, transparent 55%),
+                  linear-gradient(135deg,var(--bg1),var(--bg2));
+      overflow:hidden;
+    }
+    .wrap{width:min(420px,92vw); padding:18px}
+    .card{
+      background: rgba(17,22,42,.82);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      border-radius: 22px;
+      padding: 22px;
+      backdrop-filter: blur(10px);
+    }
+    .title{font-size:28px; margin:0 0 6px}
+    .subtitle{opacity:.85; margin:0 0 18px; line-height:1.35}
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      background: rgba(255,77,109,.12);
+      border:1px solid rgba(255,77,109,.25);
+      padding:8px 12px; border-radius:999px; margin:10px 0 16px;
+      font-size:13px; opacity:.95;
+    }
+    .question{font-size:20px; margin:6px 0 16px; line-height:1.35;}
+    .btnrow{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    button{
+      appearance:none; border:0; cursor:pointer;
+      padding:12px 14px; border-radius:14px; font-weight:700;
+      font-size:15px; flex:1; min-width:140px;
+      transition: transform .12s ease, filter .15s ease;
+      transform-origin:center;
+    }
+    button:active{transform:scale(.98)}
+    .yes{background:var(--accent); color:white}
+    .maybe{background:rgba(255,255,255,.10); color:var(--text); border:1px solid rgba(255,255,255,.12)}
+    .small{font-size:12.5px; opacity:.8; margin-top:14px; line-height:1.35}
+    .result{
+      margin-top:16px; padding:14px; border-radius:16px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      display:none;
+    }
+    .result h3{margin:0 0 6px; font-size:18px}
+    .result p{margin:0; opacity:.9; line-height:1.35}
+
+    /* Confetti */
+    .confetti{position:fixed; inset:0; pointer-events:none; overflow:hidden}
+    .piece{
+      position:absolute; width:10px; height:14px; opacity:.95; border-radius:3px;
+      animation: fall 1.6s linear forwards;
+    }
+    @keyframes fall{
+      0%{transform:translateY(-20vh) rotate(0deg)}
+      100%{transform:translateY(110vh) rotate(540deg)}
+    }
+  </style>
+</head>
+<body>
+  <div class="confetti" id="confetti"></div>
+
+  <div class="wrap">
+    <div class="card">
+      <h1 class="title">Hey Pookie ❤️</h1>
+      <p class="subtitle">I made you a tiny little “app” because you deserve extra effort, always.</p>
+
+      <div class="pill">✨ From: Jatesh • To: Boobli</div>
+
+      <div class="question">Will you be my Valentine?</div>
+
+      <div class="btnrow">
+        <button class="yes" id="yesBtn">Yes (obviously)</button>
+        <button class="maybe" id="maybeBtn">Let me think</button>
+      </div>
+
+      <div class="result" id="result">
+        <h3 id="resultTitle"></h3>
+        <p id="resultText"></p>
+      </div>
+
+      <div class="small">Tip: On iPhone, tap Share → “Add to Home Screen” to make it feel like an app.</div>
+    </div>
+  </div>
+
+  <script>
+    // 1) CUSTOMIZE THIS MESSAGE (this is what she sees after clicking YES)
+    const yesMessageTitle = "YAYYYY 💘";
+    const yesMessageText =
+      "Okay it’s official — you’re my Valentine. I’m really lucky to have you, and I can’t wait to celebrate us. ❤️";
+
+    const result = document.getElementById("result");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const yesBtn = document.getElementById("yesBtn");
+    const maybeBtn = document.getElementById("maybeBtn");
+    const confetti = document.getElementById("confetti");
+
+    let thinkCount = 0;
+
+    function show(msgTitle, msgText){
+      result.style.display = "block";
+      resultTitle.textContent = msgTitle;
+      resultText.textContent = msgText;
+    }
+
+    function popConfetti(){
+      const colors = ["#ff4d6d","#ffd166","#06d6a0","#4cc9f0","#b5179e","#f72585"];
+      for(let i=0;i<120;i++){
+        const d = document.createElement("div");
+        d.className = "piece";
+        d.style.left = Math.random()*100 + "vw";
+        d.style.top = (-10 - Math.random()*40) + "vh";
+        d.style.background = colors[Math.floor(Math.random()*colors.length)];
+        d.style.animationDuration = (1.2 + Math.random()*1.3) + "s";
+        d.style.width = (6 + Math.random()*10) + "px";
+        d.style.height = (10 + Math.random()*14) + "px";
+        confetti.appendChild(d);
+        setTimeout(()=>d.remove(), 2400);
+      }
+    }
+
+    yesBtn.addEventListener("click", ()=>{
+      popConfetti();
+      show(yesMessageTitle, yesMessageText);
+      yesBtn.textContent = "Locked in ✅";
+      maybeBtn.style.display = "none";
+      yesBtn.style.transform = "scale(1)";
+    });
+
+    const maybeLines = [
+      "Hmm… take your time 😌",
+      "Okay but the yes button looks good though 👀",
+      "Boobli… it’s getting bigger for a reason",
+      "At this point it’s destiny 💕"
+    ];
+
+    maybeBtn.addEventListener("click", ()=>{
+      thinkCount++;
+
+      const yesScale = 1 + thinkCount * 0.15;
+      const maybeScale = Math.max(0.55, 1 - thinkCount * 0.10);
+
+      yesBtn.style.transform = `scale(${yesScale})`;
+      maybeBtn.style.transform = `scale(${maybeScale})`;
+
+      show("👀", maybeLines[Math.min(thinkCount-1, maybeLines.length-1)]);
+
+      // helpful on small screens so YES stays visible
+      yesBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  </script>
+</body>
+</html>
