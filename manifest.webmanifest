@@ -1,0 +1,9 @@
+{
+  "name": "For You",
+  "short_name": "Valentine",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#ff4d6d",
+  "icons": []
+}
